@@ -9,7 +9,7 @@ namespace DurandalSecurity.Models {
     public class Login {
         public int Id { get; set; }
         
-        [Required(), MaxLength(128), Display(Name="Email Address")]
+        [Required(), MaxLength(128), Display(Name="Email Address"), EmailAddress()]
         public string Email { get; set; }
 
         [Required(), MaxLength(128)]

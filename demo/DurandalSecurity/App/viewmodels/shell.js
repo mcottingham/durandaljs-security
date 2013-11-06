@@ -7,7 +7,12 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            return datacontext.primeData().then(boot);
+            return datacontext.primeData().then(boot, failure);
+
+            function failure(error) {
+                console.log(error);
+                throw (error);
+            }
 
             function boot() {
                 router.map([

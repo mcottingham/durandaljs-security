@@ -1,15 +1,27 @@
 ﻿define([],
     function () {
         var datacontext = null;
+        var store = null;
 
         var initialize = function (context) {
             datacontext = context;
-            var store = datacontext.metadataStore;
+            store = datacontext.metadataStore;
 
-            store.registerEntityTypeCtor("Login", loginConstructor, validationInitializer);
+            store.registerEntityTypeCtor("Login", loginConstructor, loginInitializer);
+            breeze.Validator.messageTemplates.required = "%displayName% is still required...";
+        };
+
+        var addValidators = function () {
+            store.getEntityType("Login")
+                 .getProperty("email")
+                 .validators.push(breeze.Validator.emailAddress());
         };
 
         var loginConstructor = function (login) {
+        };
+
+        var loginInitializer = function (entity) {
+            validationInitializer(entity);
         };
 
         var validationInitializer = function (entity) {
@@ -50,7 +62,8 @@
         };
 
         var vm = {
-            initialize: initialize
+            initialize: initialize,
+            addValidators: addValidators
         };
 
         return vm;

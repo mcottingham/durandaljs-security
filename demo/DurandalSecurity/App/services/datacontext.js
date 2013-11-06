@@ -1,7 +1,7 @@
 ﻿define(['services/model', 'durandal/app', 'config'],
-    function (model, app, config) {                        
+    function (model, app, config) {
         var configureBreeze = function () {
-            breeze.NamingConvention.camelCase.setAsDefault();         
+            breeze.NamingConvention.camelCase.setAsDefault();
 
             // configure to resist CSRF attack
             var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
@@ -17,7 +17,12 @@
         };
 
         var primeData = function () {
-            return manager.fetchMetadata();
+            return manager.fetchMetadata().then(model.addValidators, failure);
+
+            function failure(error) {
+                console.log(error);
+                throw(error);
+            }
         };
 
         var createEntity = function (entityName) {
@@ -45,6 +50,7 @@
         manager.setProperties({ validationOptions: valOptions });
 
         model.initialize(manager);
+
         var vm = {
             manager: manager,
             primeData: primeData,
